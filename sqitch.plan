@@ -2,3 +2,4 @@
 %project=flipr
 %uri=ssh://git@source.iovation.com:7999/~david.wheeler/agile-flipr.git
 
+appschema 2016-01-26T22:47:50Z David E. Wheeler <david.wheeler@iovation.com> # Adds flipr app schema.
