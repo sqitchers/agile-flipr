@@ -5,7 +5,7 @@ SET search_path TO flipr,public;
 
 -- Plan the tests.
 BEGIN;
-SELECT plan(11);
+SELECT plan(12);
 
 SELECT has_function( 'insert_user' );
 
@@ -30,23 +30,25 @@ SELECT lives_ok(
     'Insert a user'
 );
 
-SELECT row_eq(
-   'SELECT * FROM users',
-   ROW('theory', md5('foo'), NOW())::users,
-   'The user should have been inserted'
-);
+SELECT ok( EXISTS(
+    SELECT 1 FROM flipr.users
+     WHERE nickname = 'theory'
+       AND password = crypt('foo', password)
+), 'The user should have been inserted' );
+
 SELECT lives_ok(
     $$ SELECT insert_user('strongrrl', 'w00t') $$,
     'Insert another user'
 );
-SELECT bag_eq(
-    'SELECT * FROM users',
-    $$ VALUES
-        ('theory',    md5('foo'),  NOW()),
-        ('strongrrl', md5('w00t'), NOW())
-    $$,
-    'Both users should be present'
-);
+
+SELECT is(COUNT(*)::INT, 2, 'There should be two users')
+  FROM flipr.users;
+
+SELECT ok( EXISTS(
+    SELECT 1 FROM flipr.users
+     WHERE nickname = 'strongrrl'
+       AND password = crypt('w00t', password)
+), 'The second user should have been inserted' );
 
 SELECT throws_ok(
     $$ SELECT insert_user('theory', 'ha-ha') $$,
@@ -55,14 +57,8 @@ SELECT throws_ok(
     'Should get an error for duplicate nickname'
 );
 
-SELECT bag_eq(
-    'SELECT * FROM users',
-    $$ VALUES
-        ('theory',    md5('foo'),  NOW()),
-        ('strongrrl', md5('w00t'), NOW())
-    $$,
-    'Should still have just the two users'
-);
+SELECT is(COUNT(*)::INT, 2, 'Should still have two users')
+  FROM flipr.users;
 
 SELECT finish();
 ROLLBACK;
