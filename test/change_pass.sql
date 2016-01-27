@@ -31,22 +31,22 @@ SELECT ok(
     'Changing a password should return true'
 );
 
-SELECT row_eq(
-   'SELECT * FROM users',
-   ROW('theory', md5('bar'), NOW())::users,
-   'The password should have been changed'
-);
+SELECT ok( EXISTS(
+    SELECT 1 FROM flipr.users
+     WHERE nickname = 'theory'
+       AND password = crypt('bar', password)
+), 'The password should have been changed' );
 
 SELECT ok(
     NOT change_pass('theory', 'foo', 'bar'),
     'Bad old password should return false'
 );
 
-SELECT row_eq(
-   'SELECT * FROM users',
-   ROW('theory', md5('bar'), NOW())::users,
-   'The password should be unchanged'
-);
+SELECT ok( EXISTS(
+    SELECT 1 FROM flipr.users
+     WHERE nickname = 'theory'
+       AND password = crypt('bar', password)
+), 'The password should be unchanged' );
 
 SELECT finish();
 ROLLBACK;

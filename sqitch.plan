@@ -11,3 +11,4 @@ change_pass [appschema users] 2016-01-27T01:34:15Z David E. Wheeler <david.wheel
 
 pgcrypto 2016-01-27T19:10:26Z David E. Wheeler <david.wheeler@iovation.com> # Loads pgcrypto extension.
 insert_user [insert_user@v1.0.0-r1 pgcrypto] 2016-01-27T19:19:04Z David E. Wheeler <david.wheeler@iovation.com> # Changes insert_user to use pgcrypto.
+change_pass [change_pass@v1.0.0-r1 pgcrypto] 2016-01-27T19:42:27Z David E. Wheeler <david.wheeler@iovation.com> # Changes change_pass to use pgcrypto.
