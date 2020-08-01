@@ -28,7 +28,7 @@ Before you start the project, you'll need some software.
 
     0.92.0 or higher recommended. Download
     [from PGXN](http://pgxn.org/dist/pgtap/) and consult its
-    [`README.md`](https://github.com/theory/pgtap/blob/master/README.md) for
+    [`README.md`](https://github.com/theory/pgtap#readme) for
     build instructions. Also available in some packaging systems.
 
 * [Perl](http://perl.org/)
